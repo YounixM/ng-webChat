@@ -1,0 +1,70 @@
+<div class=" container-fluid messages-container my-4" *ngIf="selectedContact">
+  <div class="message-btn-group input-group">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control user-message-input "
+        aria-describedby="button-addon4"
+        placeholder="Type a message"
+        [(ngModel)]="newMessage"
+        (keyup)="sendMessage($event)"
+      />
+      <div class="input-group-append" id="button-addon4">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="sendMessage()"
+        >
+          Send &nbsp; <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="messages my-3">
+    <div class="col message mt-5" *ngFor="let message of messagesArr">
+      <span
+        class="message-text"
+        [ngClass]="{
+          'float-left': message.author == 'websocket',
+          'float-right': message.author != 'websocket',
+          'socket-res': message.author == 'websocket',
+          'user-res': message.author != 'websocket'
+        }"
+      >
+        <span
+          [ngClass]="{
+            'float-left': message.author == 'websocket',
+            'float-right': message.author != 'websocket'
+          }"
+        >
+          <span *ngIf="message.author == 'websocket'">
+            <i class="fas fa-robot"></i> &nbsp; &nbsp; &nbsp;
+          </span>
+
+          {{ message.message }} &nbsp; &nbsp;
+
+          <span *ngIf="message.author == 'websocket'">
+            [{{ selectedContact.name }}]
+          </span>
+          <span *ngIf="message.author != 'websocket'">
+            [{{ message.author }}]
+          </span>
+          <span *ngIf="message.author != 'websocket'">
+            &nbsp; &nbsp; &nbsp; <i class="fas fa-user-astronaut"></i>
+          </span>
+        </span>
+      </span>
+    </div>
+    <div class="col mt-5 text-center" *ngIf="messagesArr.length == 0">
+      You have not had a chat with this user. Get Started :)
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid default-message-container" *ngIf="!selectedContact">
+  <h5 class="default-message">
+    <i class="fas fa-exclamation-triangle"></i> &nbsp; &nbsp; Please select a
+    contact to view the messages
+  </h5>
+</div>
